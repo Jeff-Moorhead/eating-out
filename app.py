@@ -13,7 +13,7 @@ INSERT_SQL = """\
 
 MEALS_SQL = """\
     SELECT mealdate, location, cost, name FROM meal
-    WHERE date >= ? and date <= ?;
+    WHERE mealdate >= ? and mealdate <= ?;
     """
 
 CREATE_SQL = """\
