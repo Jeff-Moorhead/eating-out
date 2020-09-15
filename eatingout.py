@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, g
+from datetime import datetime
 import os
 import sqlite3
 
@@ -13,7 +14,8 @@ INSERT_SQL = """\
     """
 
 MEALS_SQL = """\
-    SELECT date, location, cost, name FROM meal;
+    SELECT date, location, cost, name FROM meal
+    WHERE date >= ? and date <= ?;
     """
 
 
@@ -22,13 +24,19 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
+
+
+def get_first_day(date):
+    return datetime(year=date.year, month=date.month, day=1)
     
 
 @app.route("/")
 def index():
+    today = datetime.today()
+    first_day = get_first_day(today)
     cur = get_db().cursor()
-    rows = cur.execute(MEALS_SQL).fetchall()
-    return render_template("index.html", meals=rows)
+    rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
+    return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
 
 
 @app.route("/addmeal", methods=["POST"])

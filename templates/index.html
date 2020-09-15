@@ -9,7 +9,7 @@
         <div class="container">
             <form action="/addmeal" method="post">
                 <label for="date">Date: </label>
-                <input type="date" name="date" required><br>
+                <input type="date" name="date" value="{{ today }}" max="{{ today }}" required><br>
                 <label for="location">Location: </label>
                 <input type="text" name="location" required><br>
                 <label for="cost">Cost: </label>
