@@ -2,8 +2,6 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import os
 
-app = get_app()
-
 DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
@@ -48,7 +46,10 @@ def create_table():
 
 def get_first_day(date):
     return datetime(year=date.year, month=date.month, day=1)
-    
+
+
+app = get_app()
+   
 
 @app.route("/")
 def index():
