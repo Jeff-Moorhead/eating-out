@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request
 from datetime import datetime
 import os
 import logging
@@ -8,25 +8,27 @@ logging.basicConfig(filename=logfile, level=logging.DEBUG)
 
 app = Flask(__name__)
 
+create_table()
+
 DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
-    INSERT INTO meal (date, location, cost, name)
+    INSERT INTO meal (mealdate, location, cost, name)
     VALUES (?, ?, ?, ?);
     """
 
 MEALS_SQL = """\
-    SELECT date, location, cost, name FROM meal
+    SELECT mealdate, location, cost, name FROM meal
     WHERE date >= ? and date <= ?;
     """
 
 CREATE_SQL = """\
     CREATE TABLE IF NOT EXISTS meal (
-        date text,
+        mealdate date,
         location text,
         cost real,
         name text,
-        PRIMARY KEY (date, location, name)
+        PRIMARY KEY (mealdate, location, name)
     );
     """
 
@@ -34,6 +36,15 @@ CREATE_SQL = """\
 def get_db():
     db = psycopg2.connect(DATABASE, sslmode='require')
     return db
+
+
+def create_table():
+    db = get_db()
+    cur = db.cursor()
+    cur.execute(CREATE_SQL)
+    db.commit()
+    cur.close()
+    db.close()
 
 
 def get_first_day(date):
@@ -46,7 +57,6 @@ def index():
     first_day = get_first_day(today)
     db = get_db()
     cur = db.cursor()
-    cur.execute(CREATE_SQL)
     rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
     db.close()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
