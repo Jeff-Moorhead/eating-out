@@ -1,14 +1,8 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import os
-import logging
 
-logfile = os.path.join(os.path.dirname(__file__), "eatingout.log")
-logging.basicConfig(filename=logfile, level=logging.DEBUG)
-
-app = Flask(__name__)
-
-create_table()
+app = get_app()
 
 DATABASE = os.environ['DATABASE_URL']
 
@@ -31,6 +25,11 @@ CREATE_SQL = """\
         PRIMARY KEY (mealdate, location, name)
     );
     """
+
+
+def get_app():
+    create_table()
+    return Flask(__name__)
 
 
 def get_db():
