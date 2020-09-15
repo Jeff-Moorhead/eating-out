@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 import psycopg2
 
-app = Flask(__file__)
+app = Flask("eatingout")
 DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
