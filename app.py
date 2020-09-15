@@ -8,7 +8,7 @@ DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
     INSERT INTO meal (mealdate, location, cost, name)
-    VALUES (%(md)s, %(loc)s, %(cost)f, %(name)s);
+    VALUES (%(md)s, %(loc)s, %(cost)s, %(name)s);
     """
 
 MEALS_SQL = """\
