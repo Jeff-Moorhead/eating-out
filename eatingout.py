@@ -44,14 +44,11 @@ def get_first_day(date):
 def index():
     today = datetime.today()
     first_day = get_first_day(today)
-    try:
-        db = get_db()
-        db.execute(CREATE_SQL)
-    except Exception as e:
-        logging.error(e)
-
+    db = get_db()
     cur = db.cursor()
+    cur.execute(CREATE_SQL)
     rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
+    db.close()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
 
 
@@ -64,6 +61,7 @@ def addmeal():
     db = get_db()
     db.execute(INSERT_SQL, [date, location, cost, name])
     db.commit()
+    db.close()
     return render_template("addmeal.html", date=date, location=location, cost=cost, name=name)
 
 
