@@ -2,15 +2,13 @@ from flask import Flask, render_template, request, g
 from datetime import datetime
 import os
 import logging
-import sqlite3
 
 logfile = os.path.join(os.path.dirname(__file__), "eatingout.log")
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
 
 app = Flask(__name__)
 
-project_dir = os.path.dirname(__file__)
-DATABASE = os.path.join(project_dir, "meal.db")
+DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
     INSERT INTO meal (date, location, cost, name)
@@ -34,9 +32,7 @@ CREATE_SQL = """\
 
 
 def get_db():
-    db = getattr(g, "_database", None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+    db = psycopg2.connect(DATABASE, sslmode='require')
     return db
 
 
