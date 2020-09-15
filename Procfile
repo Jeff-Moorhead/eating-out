@@ -1,1 +1,1 @@
-web: gunicorn run:eatingout
+web: gunicorn eatingout:app
