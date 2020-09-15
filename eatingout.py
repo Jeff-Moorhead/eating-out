@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, g
 from datetime import datetime
 import os
+import logging
 import sqlite3
+
+logfile = os.path.join(os.path.dirname(__file__), "eatingout.log")
+logging.basicConfig(filename=logfile, level=logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -44,8 +48,12 @@ def get_first_day(date):
 def index():
     today = datetime.today()
     first_day = get_first_day(today)
-    db = get_db()
-    db.execute(CREATE_SQL)
+    try:
+        db = get_db()
+        db.execute(CREATE_SQL)
+    except Exception as e:
+        logging.error(e)
+
     cur = db.cursor()
     rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
