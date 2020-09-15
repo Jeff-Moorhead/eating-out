@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import psycopg2
 
+app = Flask(__file__)
 DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
@@ -26,31 +27,14 @@ CREATE_SQL = """\
     """
 
 
-def get_app():
-    create_table()
-    return Flask(__name__)
-
-
 def get_db():
     db = psycopg2.connect(DATABASE, sslmode='require')
     return db
 
 
-def create_table():
-    db = get_db()
-    cur = db.cursor()
-    cur.execute(CREATE_SQL)
-    db.commit()
-    cur.close()
-    db.close()
-
-
 def get_first_day(date):
     return datetime(year=date.year, month=date.month, day=1)
 
-
-app = get_app()
-   
 
 @app.route("/")
 def index():
