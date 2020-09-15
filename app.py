@@ -42,7 +42,7 @@ def index():
     first_day = get_first_day(today)
     db = get_db()
     cur = db.cursor()
-    rows = cur.execute(MEALS_SQL, {"startdate": first_day, "enddate": today).fetchall()
+    rows = cur.execute(MEALS_SQL, {"startdate": first_day, "enddate": today}).fetchall()
     db.close()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
 
@@ -54,7 +54,7 @@ def addmeal():
     cost = request.form['cost']
     name = request.form['name']
     db = get_db()
-    db.execute(INSERT_SQL, {"md": date, "loc": location, "cost": cost, "name": name])
+    db.execute(INSERT_SQL, {"md": date, "loc": location, "cost": cost, "name": name})
     db.commit()
     db.close()
     return render_template("addmeal.html", date=date, location=location, cost=cost, name=name)
