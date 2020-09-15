@@ -8,12 +8,12 @@ DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
     INSERT INTO meal (mealdate, location, cost, name)
-    VALUES (?, ?, ?, ?);
+    VALUES (%(md)s, %(loc)s, %(cost)f, %(name)s);
     """
 
 MEALS_SQL = """\
     SELECT mealdate, location, cost, name FROM meal
-    WHERE mealdate >= ? and mealdate <= ?;
+    WHERE mealdate >= %(startdate)s and mealdate <= %(enddate)s;
     """
 
 CREATE_SQL = """\
@@ -42,7 +42,7 @@ def index():
     first_day = get_first_day(today)
     db = get_db()
     cur = db.cursor()
-    rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
+    rows = cur.execute(MEALS_SQL, {"startdate": first_day, "enddate": today).fetchall()
     db.close()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
 
@@ -54,7 +54,7 @@ def addmeal():
     cost = request.form['cost']
     name = request.form['name']
     db = get_db()
-    db.execute(INSERT_SQL, [date, location, cost, name])
+    db.execute(INSERT_SQL, {"md": date, "loc": location, "cost": cost, "name": name])
     db.commit()
     db.close()
     return render_template("addmeal.html", date=date, location=location, cost=cost, name=name)
