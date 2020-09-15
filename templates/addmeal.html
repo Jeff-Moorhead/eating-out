@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Meal Added</title>
+        <link rel="stylesheet" href="../static/addmeal.css">
+    </head>
+    <body>
+        <span>
+            You have successfully added a new meal.<br><br>
+            Date: {{ date }}<br>
+            Location: {{ location }}<br>
+            Cost: ${{ cost }}<br>
+            Name: {{ name }}
+        </span>
+        <form method="get" action="/" id="home">
+            <input type="submit" value="Return to Home">
+        </form>
+    </body>
+</html>

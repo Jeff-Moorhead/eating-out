@@ -1,0 +1,16 @@
+input {
+    margin: 5px;
+}
+
+label {
+    width: 210px;
+    text-align: right;
+}
+
+table {
+    text-align: right;
+}
+
+td {
+    padding: 15px;
+}

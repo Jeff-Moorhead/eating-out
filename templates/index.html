@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Track Your Eating Out</title>
+        <link rel="stylesheet" href="../static/index.css">
+    </head>
+    <body>
+        <h1>Track Your Eating Out!</h1>
+        <div class="container">
+            <form action="/addmeal" method="post">
+                <label for="date">Date: </label>
+                <input type="date" name="date" required><br>
+                <label for="location">Location: </label>
+                <input type="text" name="location" required><br>
+                <label for="cost">Cost: </label>
+                <input type="number" name="cost" placeholder="0.00" step=".01" min=".01" required><br>
+                <label for="name">Name: </label>
+                <input type="text" name="name" required><br>
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        </div>
+        <h2>This Month's Meals</h2>
+        <div id="past-meals">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Cost</th>
+                    <th>Name</th>
+                </tr>
+                {% for meal in meals %}
+                <tr>
+                    <td>{{ meal[0] }}</td>
+                    <td>{{ meal[1] }}</td>
+                    <td>${{ meal[2] }}</td>
+                    <td>{{ meal[3] }}</td>
+                <tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
