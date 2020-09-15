@@ -46,9 +46,11 @@ def index():
         cur.execute(MEALS_SQL, {"startdate": first_day, "enddate": today})
         rows = cur.fetchall()
 
-    cost = 0
+    cost = 0.00
     for row in rows:
         cost += row[2]
+
+    cost = round(cost, 2)
 
     db.close()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows, cost=cost)
