@@ -18,6 +18,16 @@ MEALS_SQL = """\
     WHERE date >= ? and date <= ?;
     """
 
+CREATE_SQL = """\
+    CREATE TABLE IF NOT EXISTS meal (
+        date text,
+        location text,
+        cost real,
+        name text,
+        PRIMARY KEY (date, location, name)
+    );
+    """
+
 
 def get_db():
     db = getattr(g, "_database", None)
@@ -34,7 +44,9 @@ def get_first_day(date):
 def index():
     today = datetime.today()
     first_day = get_first_day(today)
-    cur = get_db().cursor()
+    db = get_db()
+    db.execute(CREATE_SQL)
+    cur = db.cursor()
     rows = cur.execute(MEALS_SQL, [first_day, today]).fetchall()
     return render_template("index.html", today=today.strftime("%Y-%m-%d"), meals=rows)
 
