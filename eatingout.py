@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import os
+import psycopg2
 
 DATABASE = os.environ['DATABASE_URL']
 
