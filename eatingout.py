@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, g
+from flask import Flask, render_template, request
 from datetime import datetime
 import os
 import logging
@@ -11,22 +11,22 @@ app = Flask(__name__)
 DATABASE = os.environ['DATABASE_URL']
 
 INSERT_SQL = """\
-    INSERT INTO meal (date, location, cost, name)
+    INSERT INTO meal (mealdate, location, cost, name)
     VALUES (?, ?, ?, ?);
     """
 
 MEALS_SQL = """\
-    SELECT date, location, cost, name FROM meal
+    SELECT mealdate, location, cost, name FROM meal
     WHERE date >= ? and date <= ?;
     """
 
 CREATE_SQL = """\
     CREATE TABLE IF NOT EXISTS meal (
-        date text,
+        mealdate date,
         location text,
         cost real,
         name text,
-        PRIMARY KEY (date, location, name)
+        PRIMARY KEY (mealdate, location, name)
     );
     """
 
